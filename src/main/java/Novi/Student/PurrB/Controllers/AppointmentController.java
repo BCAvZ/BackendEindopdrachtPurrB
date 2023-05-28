@@ -45,8 +45,8 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.editAppointment(autHeader, id, appointmentInput));
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<AppointmentDto> removeAppointment (@RequestHeader("Authorization") String authHeader, @RequestBody Long id){
+    @DeleteMapping("{id}")
+    public ResponseEntity<AppointmentDto> removeAppointment (@RequestHeader("Authorization") String authHeader, @PathVariable Long id){
         appointmentService.removeAppointment(authHeader, id);
 
         return ResponseEntity.noContent().build();
