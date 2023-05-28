@@ -1,9 +1,7 @@
 package Novi.Student.PurrB.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import Novi.Student.PurrB.Controllers.InvoiceController;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "appointments")
@@ -20,6 +18,23 @@ public class Appointment {
     private String time;
 
     private String notes;
+
+    @ManyToOne
+    @JoinColumn(name="appointments")
+    private Client client;
+
+    public Appointment(Client client) {
+        this.client = client;
+    }
+    @ManyToOne
+    @JoinColumn(name="invoices")
+    private Invoice appointments;
+
+    public Appointment(Invoice appointments) {
+        this.appointments = appointments;
+    }
+
+
 
     public Appointment(){}
 
@@ -61,5 +76,21 @@ public class Appointment {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Invoice getInvoice() {
+        return appointments;
+    }
+
+    public void setInvoice(Invoice appointments) {
+        this.appointments = appointments;
     }
 }

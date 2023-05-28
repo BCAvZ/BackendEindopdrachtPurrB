@@ -1,10 +1,7 @@
 package Novi.Student.PurrB.Models;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "cats")
@@ -25,6 +22,14 @@ public class Cat {
     private String diet;
 
     private String medicalDetails;
+
+    @ManyToOne
+    @JoinColumn(name="clients_id")
+    private Client owner;
+
+    public Cat(Client owner) {
+        this.owner = owner;
+    }
 
     public Cat() {
     }
@@ -93,5 +98,13 @@ public class Cat {
 
     public void setMedicalDetails(String medicalDetails) {
         this.medicalDetails = medicalDetails;
+    }
+
+    public Client getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Client owner) {
+        this.owner = owner;
     }
 }

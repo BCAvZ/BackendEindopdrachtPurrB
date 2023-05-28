@@ -4,18 +4,17 @@ import Novi.Student.PurrB.Dtos.ClientDto;
 import Novi.Student.PurrB.Dtos.ClientInputDto;
 import Novi.Student.PurrB.Dtos.UserDto;
 import Novi.Student.PurrB.Exceptions.RecordNotFoundException;
+import Novi.Student.PurrB.Helpers.JwtUtils;
 import Novi.Student.PurrB.Models.Client;
 import Novi.Student.PurrB.Models.User;
 import Novi.Student.PurrB.Models.Role;
 import Novi.Student.PurrB.Repositories.ClientRepository;
 import Novi.Student.PurrB.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,26 +23,31 @@ public class ClientService {
     private ClientRepository clientRepos;
 
     @Autowired
-    private JwtService jwtService;
+    private  JwtService jwtService;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
     public ClientService(ClientRepository clientRepos) {
         this.clientRepos = clientRepos;
     }
 
     public ClientDto getClientByAuth(@RequestHeader("Authorization") String authHeader) {
-        String jwtToken = authHeader.substring(7);
-        String username = jwtService.extractUsername(jwtToken);
+        if (clientRepos.findByUser_Username(jwtUtils.extractUsernameFromToken(authHeader)) != null){
+            Client c = clientRepos.findByUser_Username(jwtUtils.extractUsernameFromToken(authHeader));
 
-        ClientDto returnValue = changeToDto(clientRepos.findByUser_Username(username));
+            ClientDto returnValue = changeToDto(c);
 
-        returnValue.user.password = "*********";
+            returnValue.user.password = "*********";
 
-        return returnValue;
+            return returnValue;
+        } else {
+            throw new RuntimeException("CLIENT NOT FOUND");
+        }
     }
-
 
     public ClientDto postClient(@RequestHeader("Authorization") String authHeader, ClientInputDto input){
 

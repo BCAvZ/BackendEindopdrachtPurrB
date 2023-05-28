@@ -1,7 +1,8 @@
 package Novi.Student.PurrB.Dtos;
 
-import Novi.Student.PurrB.Models.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 public class ClientDto {
 
@@ -18,15 +19,23 @@ public class ClientDto {
     @JsonProperty("user")
     public UserDto user;
 
-    public ClientDto() {
+    private List<AppointmentDto> appointments;
+
+    public List<AppointmentDto> getAppointments() {
+        return appointments;
     }
 
-    public ClientDto(Long clientId, String name, String email, String phone, String address, UserDto user) {
-        this.clientId = clientId;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.user = user;
+    public void setAppointments(List<AppointmentDto> appointments) {
+        this.appointments = appointments;
+    }
+
+    private List<CatDto> cats;
+
+    public List<CatDto> getCats() {
+        return cats;
+    }
+
+    public void setCats(List<CatDto> cats) {
+        this.cats = cats;
     }
 }

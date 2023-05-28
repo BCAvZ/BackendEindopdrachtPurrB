@@ -1,9 +1,8 @@
 package Novi.Student.PurrB.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "invoices")
@@ -19,6 +18,13 @@ public class Invoice {
 
     private boolean paid;
 
+    @ManyToOne
+    @JoinColumn(name="customer_id")
+    private Client customer;
+
+    @OneToMany(mappedBy = "appointments")
+    private List<Appointment> appointments;
+
     public Invoice(){}
 
     public Invoice(long invoidId, String dueDate, int amount, boolean paid) {
@@ -26,6 +32,10 @@ public class Invoice {
         this.dueDate = dueDate;
         this.amount = amount;
         this.paid = paid;
+    }
+
+    public Invoice(Client customer) {
+        this.customer = customer;
     }
 
     public long getInvoidId() {
@@ -58,5 +68,21 @@ public class Invoice {
 
     public void setPaid(boolean paid) {
         this.paid = paid;
+    }
+
+    public Client getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Client customer) {
+        this.customer = customer;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
     }
 }

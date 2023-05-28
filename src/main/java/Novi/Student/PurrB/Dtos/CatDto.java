@@ -16,16 +16,5 @@ public class CatDto {
 
     public String medicalDetails;
 
-    public CatDto() {
-    }
-
-    public CatDto(long catId, String name, String dob, String race, int age, String diet, String medicalDetails) {
-        this.catId = catId;
-        this.name = name;
-        this.dob = dob;
-        this.race = race;
-        this.age = age;
-        this.diet = diet;
-        this.medicalDetails = medicalDetails;
-    }
+    public ClientDto owner;
 }

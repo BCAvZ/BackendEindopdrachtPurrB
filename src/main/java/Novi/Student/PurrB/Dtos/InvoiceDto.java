@@ -1,5 +1,11 @@
 package Novi.Student.PurrB.Dtos;
 
+import Novi.Student.PurrB.Models.Appointment;
+import Novi.Student.PurrB.Models.Client;
+import Novi.Student.PurrB.Models.Invoice;
+
+import java.util.List;
+
 public class InvoiceDto {
 
 
@@ -11,13 +17,7 @@ public class InvoiceDto {
 
     public boolean paid;
 
-    public InvoiceDto() {
-    }
+    public ClientDto customer;
 
-    public InvoiceDto(long invoidId, String dueDate, int amount, boolean paid) {
-        this.invoidId = invoidId;
-        this.dueDate = dueDate;
-        this.amount = amount;
-        this.paid = paid;
-    }
+    public List<Appointment> appointments;
 }
