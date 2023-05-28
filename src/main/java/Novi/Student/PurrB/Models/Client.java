@@ -2,6 +2,8 @@ package Novi.Student.PurrB.Models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "clients")
 public class Client {
@@ -12,6 +14,15 @@ public class Client {
 
     @OneToOne
     private User user;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Cat> cats;
+
+    @OneToMany(mappedBy = "client")
+    private List<Appointment> appointments;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Invoice> invoices;
 
     private String name;
 
@@ -90,5 +101,29 @@ public class Client {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Cat> getCats() {
+        return cats;
+    }
+
+    public void setCats(List<Cat> cats) {
+        this.cats = cats;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
     }
 }

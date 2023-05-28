@@ -19,31 +19,31 @@ public class ClientController {
         @Autowired
         private UserRepository userRepository;
 
-        private final ClientService service;
+        private final ClientService clientService;
 
         public ClientController(ClientService service) {
-                this.service = service;
+                this.clientService = service;
         }
 
         @GetMapping("/me")
         public ResponseEntity<ClientDto> getClientByAuth(@RequestHeader ("Authorization") String authHeader){
-                return ResponseEntity.ok().body(service.getClientByAuth(authHeader));
+                return ResponseEntity.ok().body(clientService.getClientByAuth(authHeader));
         }
 
         @PostMapping("")
         public ResponseEntity<ClientInputDto> postClient(@RequestHeader ("Authorization") String authHeader, @RequestBody ClientInputDto c){
-                service.postClient(authHeader, c);
-                return ResponseEntity.ok(c);
+                clientService.postClient(authHeader, c);
+                return ResponseEntity.created(null).body(c);
         }
 
         @PutMapping("{id}")
         public ResponseEntity<ClientDto> editClient(@RequestHeader ("Authorization") String authHeader, @PathVariable Long id, @RequestBody ClientInputDto c){
-                return ResponseEntity.ok(service.editClient(authHeader, id, c));
+                return ResponseEntity.ok(clientService.editClient(authHeader, id, c));
         }
 
         @DeleteMapping("")
         public ResponseEntity<ClientDto> deleteClient(@RequestHeader ("Authorization") String authHeader, Long id){
-                service.removeClient(authHeader, id);
+                clientService.removeClient(authHeader, id);
                 return ResponseEntity.noContent().build();
         }
 
