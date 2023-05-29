@@ -24,6 +24,17 @@ public class Client {
     @OneToMany(mappedBy = "customer")
     private List<Invoice> invoices;
 
+    @OneToMany(mappedBy = "invoiceClient")
+    private List<FileDocument> fileDocuments;
+
+    public List<FileDocument> getFileDocuments() {
+        return fileDocuments;
+    }
+
+    public void setFileDocuments(List<FileDocument> fileDocuments) {
+        this.fileDocuments = fileDocuments;
+    }
+
     private String name;
 
     private String email;
