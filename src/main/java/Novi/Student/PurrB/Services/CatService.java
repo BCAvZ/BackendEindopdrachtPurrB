@@ -38,20 +38,13 @@ public class CatService {
     }
 
     public List<CatDto> getCatsByAuth(@RequestHeader("Authorization") String authHeader){
-        String jwtToken = authHeader.substring(7);
-        String username = jwtService.extractUsername(jwtToken);
-
-        Client c = clientRepos.findByUser_Username(username);
+        Client c = clientRepos.findByUser_Username(jwtUtils.extractUsernameFromToken(authHeader));
 
         return convertCatsToCatDtos(c.getCats());
     }
 
     public CatDto postCat(@RequestHeader("Authorization") String authHeader, CatInputDto catInput){
-
-        String jwtToken = authHeader.substring(7);
-        String username = jwtService.extractUsername(jwtToken);
-
-        Client c = clientRepos.findByUser_Username(username);
+        Client c = clientRepos.findByUser_Username(jwtUtils.extractUsernameFromToken(authHeader));
 
         Cat a = catToModel(catInput);
 
@@ -62,7 +55,6 @@ public class CatService {
     }
 
     public CatDto editCat (@RequestHeader("Authorization") String authHeader, Long id, CatDto catInput){
-
         Client c = clientRepos.findByUser_Username(jwtUtils.extractUsernameFromToken(authHeader));
 
         List<Cat> cats = c.getCats();
@@ -90,7 +82,6 @@ public class CatService {
     }
 
     public void removeCat(@RequestHeader("Authorization") String authHeader, Long id){
-
         Client c = clientRepos.findByUser_Username(jwtUtils.extractUsernameFromToken(authHeader));
 
         List<Cat> cats = c.getCats();
@@ -168,8 +159,4 @@ public class CatService {
         clientDto.phone = client.getPhone();
         return clientDto;
     }
-
-    
-
-
 }
