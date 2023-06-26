@@ -23,10 +23,10 @@ public class ClientService {
     private ClientRepository clientRepos;
 
     @Autowired
-    private  JwtService jwtService;
+    JwtService jwtService;
 
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     @Autowired
     private JwtUtils jwtUtils;
@@ -50,7 +50,6 @@ public class ClientService {
     }
 
     public ClientDto postClient(@RequestHeader("Authorization") String authHeader, ClientInputDto input){
-
         String jwtToken = authHeader.substring(7);
         String username = jwtService.extractUsername(jwtToken);
 
@@ -66,11 +65,7 @@ public class ClientService {
 
     public ClientDto editClient(@RequestHeader ("Authorization") String authHeader, Long id, ClientInputDto newClient){
 
-        String jwtToken = authHeader.substring(7);
-        String username = jwtService.extractUsername(jwtToken);
-
-        User u = jwtService.getUserByUsername(username);
-        Client c = clientRepos.findByUser_Username(username);
+        Client c = clientRepos.findByUser_Username(jwtUtils.extractUsernameFromToken(authHeader));
 
         if (Objects.equals(c.getClientId(), id)){
             c.setAddress(newClient.address);
@@ -87,11 +82,7 @@ public class ClientService {
     }
 
     public void removeClient(@RequestHeader ("Authorization") String authHeader, Long id){
-        String jwtToken = authHeader.substring(7);
-        String username = jwtService.extractUsername(jwtToken);
-
-        User u = jwtService.getUserByUsername(username);
-        Client c = clientRepos.findByUser_Username(username);
+        Client c = clientRepos.findByUser_Username(jwtUtils.extractUsernameFromToken(authHeader));
 
         if (Objects.equals(c.getClientId(), id)) {
             clientRepos.deleteById(id);
@@ -99,7 +90,6 @@ public class ClientService {
         else {
             throw new RecordNotFoundException("Wrong Client ID, check your client/me page for your ID.");
         }
-
     }
 
     public Client changeToModel(ClientInputDto dto){

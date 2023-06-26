@@ -4,6 +4,7 @@ import Novi.Student.PurrB.Dtos.*;
 import Novi.Student.PurrB.Exceptions.RecordNotFoundException;
 import Novi.Student.PurrB.Helpers.JwtUtils;
 import Novi.Student.PurrB.Models.Appointment;
+import Novi.Student.PurrB.Models.Cat;
 import Novi.Student.PurrB.Models.Client;
 import Novi.Student.PurrB.Models.Role;
 import Novi.Student.PurrB.Repositories.AppointmentRepository;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -84,16 +86,17 @@ public class AppointmentService {
     public void removeAppointment(@RequestHeader("Authorization") String authHeader, @RequestBody Long id) {
         Client c = clientRepos.findByUser_Username(jwtUtils.extractUsernameFromToken(authHeader));
 
-        List<Appointment> appointments = c.getAppointments();
+        Optional<Appointment> appointmentOptional = c.getAppointments().stream()
+                .filter(appointment -> appointment.getAppointmentId() == id)
+                .findFirst();
 
-        for (Appointment appointment : appointments) {
-            if (appointment.getAppointmentId() == (id)) {
-                appointmentRepos.delete(appointment);
-            } else {
-                throw new RecordNotFoundException("Wrong Appointment ID, check your client/me page for your ID.");
-            }
+        if (appointmentOptional.isPresent()) {
+            appointmentRepos.deleteById(id);
+        } else {
+            throw new RecordNotFoundException("Appointment with ID " + id + " not found.");
         }
     }
+
 
     public Appointment appointmentToModel(AppointmentInputDto appointmentInput){
 

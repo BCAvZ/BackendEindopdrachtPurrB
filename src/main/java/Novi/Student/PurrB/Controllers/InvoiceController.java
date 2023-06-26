@@ -34,8 +34,8 @@ public class InvoiceController {
         return ResponseEntity.ok().body(invoiceService.getInvoiceByAuth(authHeader));
     }
 
-    @PostMapping("")
-    public ResponseEntity<InvoiceInputDto> postInvoice(@RequestBody InvoiceInputDto invoiceInput, Long clientId){
+    @PostMapping("{clientId}")
+    public ResponseEntity<InvoiceInputDto> postInvoice(@RequestBody InvoiceInputDto invoiceInput, @PathVariable("clientId") Long clientId){
         invoiceService.postInvoice(invoiceInput, clientId);
 
         return ResponseEntity.created(null).body(invoiceInput);
