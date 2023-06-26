@@ -23,10 +23,10 @@ public class ClientService {
     private ClientRepository clientRepos;
 
     @Autowired
-    private  JwtService jwtService;
+    JwtService jwtService;
 
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
     @Autowired
     private JwtUtils jwtUtils;
