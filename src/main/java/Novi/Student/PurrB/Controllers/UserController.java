@@ -1,5 +1,6 @@
 package Novi.Student.PurrB.Controllers;
 
+import Novi.Student.PurrB.Exceptions.RecordNotFoundException;
 import Novi.Student.PurrB.Models.User;
 import Novi.Student.PurrB.Dtos.UserDto;
 import Novi.Student.PurrB.Models.Role;
@@ -36,8 +37,11 @@ public class UserController {
         List<Role> userRoles = new ArrayList<>();
         for (String roleName : userDto.roles) {
             Optional<Role> or = roleRepos.findById(roleName);
-
-            userRoles.add(or.get());
+            if(or.isPresent()){
+                userRoles.add(or.get());
+            } else {
+                throw new RecordNotFoundException("Role is not found " + roleName);
+            }
         }
         newUser.setRoles(userRoles);
 
