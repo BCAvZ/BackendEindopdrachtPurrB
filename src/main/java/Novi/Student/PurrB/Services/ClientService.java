@@ -50,8 +50,11 @@ public class ClientService {
     }
 
     public ClientDto postClient(@RequestHeader("Authorization") String authHeader, ClientInputDto input){
+        String jwtToken = authHeader.substring(7);
+        String username = jwtService.extractUsername(jwtToken);
+
         Client c = changeToModel(input);
-        User u = jwtService.getUserByUsername(jwtUtils.extractUsernameFromToken(authHeader));
+        User u = jwtService.getUserByUsername(username);
 
         c.setUser(u);
 
@@ -87,7 +90,6 @@ public class ClientService {
         else {
             throw new RecordNotFoundException("Wrong Client ID, check your client/me page for your ID.");
         }
-
     }
 
     public Client changeToModel(ClientInputDto dto){

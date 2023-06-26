@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class CatService {
 
@@ -84,17 +86,16 @@ public class CatService {
     public void removeCat(@RequestHeader("Authorization") String authHeader, Long id){
         Client c = clientRepos.findByUser_Username(jwtUtils.extractUsernameFromToken(authHeader));
 
-        List<Cat> cats = c.getCats();
+        Optional<Cat> catOptional = c.getCats().stream()
+                .filter(cat -> cat.getCatId() == id)
+                .findFirst();
 
-        for (Cat cat : cats) {
-            if (cat.getCatId() == (id)) {
-                catRepos.delete(cat);
-            }
-
-            else {
-                throw new RecordNotFoundException("Wrong Cat ID, check your client/me page for your ID.");
-            }
-    }}
+        if (catOptional.isPresent()) {
+            catRepos.deleteById(id);
+        } else {
+            throw new RecordNotFoundException("Cat with ID " + id + " not found.");
+        }
+    }
 
 
 
