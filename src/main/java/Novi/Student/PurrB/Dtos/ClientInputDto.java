@@ -1,6 +1,5 @@
 package Novi.Student.PurrB.Dtos;
 
-import Novi.Student.PurrB.Models.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
@@ -11,7 +10,6 @@ public class ClientInputDto {
 
     @Email(message = "Your email must include a @")
     public String email;
-
 
     public String phone;
 
